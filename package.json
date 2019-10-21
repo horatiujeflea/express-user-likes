@@ -1,0 +1,19 @@
+{
+  "name": "express-user-likes",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/horatiujeflea/express-user-likes.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/horatiujeflea/express-user-likes/issues"
+  },
+  "homepage": "https://github.com/horatiujeflea/express-user-likes#readme"
+}
