@@ -1,6 +1,6 @@
 {
   "name": "express-user-likes",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Express app for liking users",
   "main": "app/app.js",
   "jest": {
@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "jest",
-    "rootDir": "test/unit"
+    "start": "node app/app.js"
   },
   "repository": {
     "type": "git",
@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/horatiujeflea/express-user-likes#readme",
   "dependencies": {
+    "express": "^4.17.1",
     "knex": "^0.19.5",
     "pg": "^7.12.1"
   },
