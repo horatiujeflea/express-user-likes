@@ -1,17 +1,9 @@
 const { knex, app } = require('./config/appconfig');
 const { getStatus } = require('./service/status');
+const { getReadmeHtml } = require('./service/readme');
 
 app.get('/', (req, res) => {
-    const showdown = require('showdown');
-    const fs = require('fs');
-    const path = require('path');
-
-    const readmeFile = fs.readFileSync(path.join(__dirname+ '/../README.md'), 'utf8');
-    const readmeText = readmeFile.toString();
-    const converter = new showdown.Converter();
-    const readmeHtml = converter.makeHtml(readmeText);
-
-    res.send(readmeHtml);
+    res.send(getReadmeHtml());
 });
 
 app.get('/status', function (req, res) {
