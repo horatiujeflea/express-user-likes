@@ -24,7 +24,6 @@ Each user can like another only once, and they can unlike eachother.
 The bolded endpoints are authenticated calls.
 
 
-
 ### Other instructions:
 Use:
  - Node.js
