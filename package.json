@@ -23,7 +23,8 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "knex": "^0.19.5",
-    "pg": "^7.12.1"
+    "pg": "^7.12.1",
+    "showdown": "^1.9.0"
   },
   "devDependencies": {
     "jest": "^24.9.0",

@@ -1,34 +1,24 @@
-require('dotenv').config();
-
+const { knex, app } = require('./config/appconfig');
 const { getStatus } = require('./service/status');
 
-const express = require('express');
-const app = express();
-const port = process.env.PORT;
+app.get('/', (req, res) => {
+    const showdown = require('showdown');
+    const fs = require('fs');
+    const path = require('path');
 
-app.get('/', (req, res) => res.send('Hello World!'));
+    const readmeFile = fs.readFileSync(path.join(__dirname+ '/../README.md'), 'utf8');
+    const readmeText = readmeFile.toString();
+    const converter = new showdown.Converter();
+    const readmeHtml = converter.makeHtml(readmeText);
+
+    res.send(readmeHtml);
+});
 
 app.get('/status', function (req, res) {
     res.send(getStatus());
 });
 
 app.get('/users', async function (req, res) {
-    const knex = require('knex')({
-        client: 'pg',
-        version: '11.5',
-        connection: {
-            host : process.env.DB_HOST,
-            user : process.env.DB_USER,
-            password : process.env.DB_PASS,
-            database : process.env.DB_DATABASE
-        }
-    });
-
     let queryBuilder = await knex('account').select('*');
-    console.log(queryBuilder[1]);
-
-    res.send('done');
-
+    res.send(queryBuilder[1]);
 });
-
-app.listen(port, () => console.log(`User likes app listening on port ${port}!`));
