@@ -8,7 +8,6 @@ const likeUser = async (userId, knex) => {
     let insertIgnoreQ = knex.raw(insertQ.toQuery())
         + " ON DUPLICATE KEY DO NOTHING";
 
-    console.log(insertIgnoreQ.toString());
     await insertIgnoreQ;
 
     return {
