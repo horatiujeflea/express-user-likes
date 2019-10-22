@@ -2,9 +2,10 @@ let { ValidationError } = require('../error/ValidationError');
 
 const likeUser = async (userId, knex) => {
     let loggedInUserId = 1;
+    let toUserId = parseInt(userId);
 
     let insertQ = knex('user_like')
-        .insert([{from_user: loggedInUserId, to_user: parseInt(userId)}]);
+        .insert([{from_user: loggedInUserId, to_user: toUserId}]);
     let insertIgnoreQ = knex.raw(insertQ.toQuery())
         + " ON DUPLICATE KEY DO NOTHING";
 
@@ -12,7 +13,7 @@ const likeUser = async (userId, knex) => {
 
     return {
         from: loggedInUserId,
-        to: userId,
+        to: toUserId,
         state: "successful"
     };
 };
