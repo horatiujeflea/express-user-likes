@@ -10,6 +10,7 @@ const { likeUser } = require('./service/likeUser');
 const { unlikeUser } = require('./service/unlikeUser');
 const { signUp } = require('./service/signup');
 const { login } = require('./service/login');
+const { isAuthorized, getUsernameFromToken } = require('./service/auth');
 
 
 app.get('/', (req, res) => {
@@ -53,6 +54,22 @@ app.post('/login', async function(req, res) {
             username,
             status: "successful"
         });
+    } catch (e) {
+        console.error(e);
+        sendError(res)(e);
+    }
+});
+
+app.get('/me', async function (req, res) {
+    try {
+        const token = req.cookies.token;
+        if (isAuthorized(token)) {
+            res.json({
+                "username": getUsernameFromToken(token)
+            });
+        } else {
+            res.status(401).send("Unauthorized");
+        }
     } catch (e) {
         console.error(e);
         sendError(res)(e);
