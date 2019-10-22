@@ -8,6 +8,7 @@ const { getMostLiked } = require('./service/mostLiked');
 const { getUserInfo } = require('./service/getUserInfo');
 const { likeUser } = require('./service/likeUser');
 const { unlikeUser } = require('./service/unlikeUser');
+const { signUp } = require('./service/signup');
 
 
 app.get('/', (req, res) => {
@@ -22,6 +23,17 @@ app.get('/', (req, res) => {
 app.get('/status', function (req, res) {
     try {
         res.send(getStatus());
+    } catch (e) {
+        console.error(e);
+        sendError(res)(e);
+    }
+});
+
+app.post('/signup', async function(req, res, next) {
+    try {
+        const username = req.body.username;
+        const password = req.body.password;
+        res.send(await signUp(username, password, knex));
     } catch (e) {
         console.error(e);
         sendError(res)(e);

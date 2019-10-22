@@ -1,4 +1,4 @@
-let {ValidationError} = require('../error/ValidationError');
+const { ValidationError } = require('../error/ValidationError');
 
 const likeUser = async (userId, knex) => {
     let loggedInUserId = 1;
