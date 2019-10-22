@@ -1,4 +1,4 @@
-const { knex, app } = require('./config/appconfig');
+const { knex, app } = require('./config/appConfig');
 
 const { getReadmeHtml } = require('./service/readme');
 const { getStatus } = require('./service/status');
@@ -44,3 +44,5 @@ app.get('/user/:id/', async function (req, res) {
         sendError(res)(e);
     }
 });
+
+app.listen(process.env.PORT, () => console.log(`User likes app listening on port ${process.env.PORT}!`));

@@ -13,8 +13,6 @@ const knex = require('knex')({
 
 const express = require('express');
 const app = express();
-const port = process.env.PORT;
-app.listen(port, () => console.log(`User likes app listening on port ${port}!`));
 
 module.exports = {
     knex,
