@@ -13,7 +13,7 @@ app.get('/', (req, res) => {
         res.send(getReadmeHtml());
     } catch (e) {
         // log exception
-        sendError(res, 500)(e);
+        sendError(res)(e);
     }
 });
 
@@ -22,7 +22,7 @@ app.get('/status', function (req, res) {
         res.send(getStatus());
     } catch (e) {
         // log exception
-        sendError(res, 500)(e);
+        sendError(res)(e);
     }
 });
 
@@ -31,7 +31,7 @@ app.get('/most-liked', async function (req, res) {
         res.json(await getMostLiked(knex));
     } catch (e) {
         // log exception
-        sendError(res, 500)(e);
+        sendError(res)(e);
     }
 });
 
@@ -41,6 +41,6 @@ app.get('/user/:id/', async function (req, res) {
         res.json(await getUserInfo(userId, knex));
     } catch (e) {
         // log exception
-        sendError(res, 500)(e);
+        sendError(res)(e);
     }
 });

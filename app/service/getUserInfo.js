@@ -1,3 +1,5 @@
+let { ValidationError } = require('../error/ValidationError');
+
 const getUserInfo = async (userId, knex) => {
     const getLikesQ = knex('user_like')
         .count('* as total')
@@ -10,8 +12,7 @@ const getUserInfo = async (userId, knex) => {
 
     const foundUsername = (await getUsernameQ)[0];
     if (!foundUsername) {
-        res.status(400).send("User does not exist");
-        return;
+        throw new ValidationError("User does not exist");
     }
 
     const foundLikes = (await getLikesQ)[0];
