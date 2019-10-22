@@ -20,6 +20,11 @@ const signUp = async (username, password, knex) => {
         const insertQ = knex('app_user')
             .insert([{username: username, password: hash}]);
         await insertQ;
+
+        return {
+            username,
+            status: "successful"
+        }
     } catch (e) {
         switch (e.constraint) {
             case 'app_user_username_key':
@@ -28,8 +33,6 @@ const signUp = async (username, password, knex) => {
                 throw new Error(e);
         }
     }
-
-    // const match = await bcrypt.compare(password, hash);
 };
 
 const validateUsername = (username) => {

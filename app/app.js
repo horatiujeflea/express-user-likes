@@ -9,6 +9,7 @@ const { getUserInfo } = require('./service/getUserInfo');
 const { likeUser } = require('./service/likeUser');
 const { unlikeUser } = require('./service/unlikeUser');
 const { signUp } = require('./service/signup');
+const { login } = require('./service/login');
 
 
 app.get('/', (req, res) => {
@@ -22,18 +23,36 @@ app.get('/', (req, res) => {
 
 app.get('/status', function (req, res) {
     try {
-        res.send(getStatus());
+        res.json(getStatus());
     } catch (e) {
         console.error(e);
         sendError(res)(e);
     }
 });
 
-app.post('/signup', async function(req, res, next) {
+app.post('/signup', async function(req, res) {
     try {
         const username = req.body.username;
         const password = req.body.password;
-        res.send(await signUp(username, password, knex));
+        res.json(await signUp(username, password, knex));
+    } catch (e) {
+        console.error(e);
+        sendError(res)(e);
+    }
+});
+
+app.post('/login', async function(req, res) {
+    try {
+        const username = req.body.username;
+        const password = req.body.password;
+
+        const token = await login(username, password, knex);
+
+        res.cookie('token', token, { maxAge: process.env.JWT_EXPIRY_SECONDS * 1000 });
+        res.json({
+            username,
+            status: "successful"
+        });
     } catch (e) {
         console.error(e);
         sendError(res)(e);
