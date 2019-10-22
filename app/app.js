@@ -8,7 +8,7 @@ const { getMostLiked } = require('./service/mostLiked');
 const { getUserInfo } = require('./service/getUserInfo');
 const { likeUser } = require('./service/likeUser');
 const { unlikeUser } = require('./service/unlikeUser');
-const { signUp } = require('./service/signup');
+const { signUp, changePassword } = require('./service/registration');
 const { login } = require('./service/login');
 const { isAuthorized, getUsernameFromToken } = require('./service/auth');
 
@@ -67,6 +67,23 @@ app.get('/me', async function (req, res) {
             res.json({
                 "username": getUsernameFromToken(token)
             });
+        } else {
+            res.status(401).send("Unauthorized");
+        }
+    } catch (e) {
+        console.error(e);
+        sendError(res)(e);
+    }
+});
+
+app.put('/me/update-password', async function (req, res) {
+    try {
+        const password = req.body.password;
+        const token = req.cookies.token;
+
+        if (isAuthorized(token)) {
+            await changePassword(getUsernameFromToken(token), password, knex);
+            res.send('Successful');
         } else {
             res.status(401).send("Unauthorized");
         }

@@ -6,15 +6,15 @@ const { ValidationError } = require('../error/ValidationError');
 
 
 const signUp = async (username, password, knex) => {
-    if (!validateUsername(username)) {
+    if (!_validateUsername(username)) {
         throw new ValidationError('Username is not correct (specify requirements...)');
     }
 
-    if (!validatePassword(username)) {
+    if (!_validatePassword(username)) {
         throw new ValidationError('Password is not correct (specify requirements...)');
     }
 
-    const hash = await bcrypt.hash(password, saltRounds);
+    const hash = await _getHashFromPass(password);
 
     try {
         const insertQ = knex('app_user')
@@ -35,16 +35,30 @@ const signUp = async (username, password, knex) => {
     }
 };
 
-const validateUsername = (username) => {
+const changePassword = async (username, password, knex) => {
+    if (!_validatePassword(username)) {
+        throw new ValidationError('New password is not correct (specify requirements...)');
+    }
+
+    const hash = await _getHashFromPass(password);
+    await knex('app_user').update('password', hash);
+};
+
+const _validateUsername = (username) => {
     // implement requirements
     return true;
 };
 
-const validatePassword = (password) => {
+const _validatePassword = (password) => {
     // implement requirements
     return true;
 };
+
+async function _getHashFromPass(password) {
+    return await bcrypt.hash(password, saltRounds);
+}
 
 module.exports = {
-    signUp
+    signUp,
+    changePassword
 };
