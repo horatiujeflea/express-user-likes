@@ -6,6 +6,14 @@ const { ValidationError } = require('../error/ValidationError');
 
 
 const signUp = async (username, password, knex) => {
+    if (!validateUsername(username)) {
+        throw new ValidationError('Username is not correct (specify requirements...)');
+    }
+
+    if (!validatePassword(username)) {
+        throw new ValidationError('Password is not correct (specify requirements...)');
+    }
+
     const hash = await bcrypt.hash(password, saltRounds);
 
     try {
@@ -22,6 +30,16 @@ const signUp = async (username, password, knex) => {
     }
 
     // const match = await bcrypt.compare(password, hash);
+};
+
+const validateUsername = (username) => {
+    // implement requirements
+    return true;
+};
+
+const validatePassword = (password) => {
+    // implement requirements
+    return true;
 };
 
 module.exports = {
