@@ -22,7 +22,12 @@ const getUsernameFromToken = (token) => {
     return jwt.verify(token, process.env.JWT_SECRET).username;
 };
 
+const getUserIdFromToken = (token) => {
+    return jwt.verify(token, process.env.JWT_SECRET).userId;
+};
+
 module.exports = {
     isAuthorized,
-    getUsernameFromToken
+    getUsernameFromToken,
+    getUserIdFromToken
 };

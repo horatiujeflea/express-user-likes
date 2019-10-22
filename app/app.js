@@ -10,7 +10,7 @@ const { likeUser } = require('./service/likeUser');
 const { unlikeUser } = require('./service/unlikeUser');
 const { signUp, changePassword } = require('./service/registration');
 const { login } = require('./service/login');
-const { isAuthorized, getUsernameFromToken } = require('./service/auth');
+const { isAuthorized, getUsernameFromToken, getUserIdFromToken } = require('./service/auth');
 
 
 app.get('/', (req, res) => {
@@ -114,8 +114,15 @@ app.get('/user/:id/', async function (req, res) {
 
 app.put('/user/:id/like', async function (req, res) {
     try {
+        const token = req.cookies.token;
         const userId = req.params.id;
-        res.json(await likeUser(userId, knex));
+
+        if (isAuthorized(token)) {
+            const loggedInUser = parseInt(getUserIdFromToken(token));
+            res.json(await likeUser(loggedInUser, userId, knex));
+        } else {
+            res.status(401).send("Unauthorized");
+        }
     } catch (e) {
         console.error(e);
         sendError(res)(e);
@@ -124,8 +131,15 @@ app.put('/user/:id/like', async function (req, res) {
 
 app.delete('/user/:id/unlike', async function (req, res) {
     try {
+        const token = req.cookies.token;
         const userId = req.params.id;
-        res.json(await unlikeUser(userId, knex));
+
+        if (isAuthorized(token)) {
+            const loggedInUser = parseInt(getUserIdFromToken(token));
+            res.json(await unlikeUser(loggedInUser, userId, knex));
+        } else {
+            res.status(401).send("Unauthorized");
+        }
     } catch (e) {
         console.error(e);
         sendError(res)(e);

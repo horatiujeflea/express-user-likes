@@ -1,7 +1,6 @@
 const { ValidationError } = require('../error/ValidationError');
 
-const likeUser = async (userId, knex) => {
-    let loggedInUserId = 1;
+const likeUser = async (loggedInUserId, userId, knex) => {
     let toUserId = parseInt(userId);
 
     const successResp = {

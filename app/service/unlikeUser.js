@@ -1,5 +1,4 @@
-const unlikeUser = async (userId, knex) => {
-    let loggedInUserId = 1;
+const unlikeUser = async (loggedInUserId, userId, knex) => {
     let toUserId = parseInt(userId);
 
     const deleteQ = knex('user_like')
