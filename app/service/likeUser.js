@@ -10,8 +10,7 @@ const likeUser = async (loggedInUserId, userId, knex) => {
     };
 
     try {
-        const insertQ = knex('user_like')
-            .insert([{from_user: loggedInUserId, to_user: toUserId}]);
+        const insertQ = lib._getInsertQ(knex, loggedInUserId, toUserId);
         await insertQ;
 
         return successResp;
@@ -29,7 +28,15 @@ const likeUser = async (loggedInUserId, userId, knex) => {
     }
 };
 
-module.exports = {
-    likeUser
+function _getInsertQ(knex, loggedInUserId, toUserId) {
+    return knex('user_like')
+        .insert([{from_user: loggedInUserId, to_user: toUserId}]);
+}
+
+const lib = {
+    likeUser,
+    _getInsertQ
 };
+
+module.exports = lib;
 
