@@ -1,22 +1,12 @@
-const { getMostLiked } = require('../../../app/service/mostLiked');
+const mostLiked = require('../../../app/service/mostLiked');
 
-test('mostLikes should return ', () => {
-    const mockKnex = () => {
-        const q = {
-            select: () => q,
-            count: () => q,
-            groupBy: () => q,
-            as: () => q,
-            from: () => q,
-            innerJoin: () => q,
-            orderBy: () => q,
-            limit: () => q,
-        };
+test('mostLikes should execute all queries ', async () => {
+    mostLiked._getLikesByUserQ = jest.fn(() => "partial_query");
+    mostLiked._getMostLikedQ = jest.fn(() => 'result');
 
-        return q;
-    };
+    const result = await mostLiked.getMostLiked();
+    expect(result).toEqual('result');
 
-    const mostLiked = getMostLiked(mockKnex);
-
-
+    expect(mostLiked._getLikesByUserQ).toHaveBeenCalledTimes(1);
+    expect(mostLiked._getMostLikedQ).toHaveBeenCalledTimes(1);
 });
