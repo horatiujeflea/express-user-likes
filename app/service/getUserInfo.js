@@ -1,14 +1,9 @@
-let { ValidationError } = require('../error/ValidationError');
+const { ValidationError } = require('../error/ValidationError');
+
 
 const getUserInfo = async (userId, knex) => {
-    const getLikesQ = knex('user_like')
-        .count('* as total')
-        .having('to_user', '=', userId)
-        .groupBy('to_user');
-
-    const getUsernameQ = knex('app_user')
-        .select('username')
-        .where('id', userId);
+    const getLikesQ = lib._getLikesQ(knex, userId);
+    const getUsernameQ = lib._getUsernameQ(knex, userId);
 
     const foundUsername = (await getUsernameQ)[0];
     if (!foundUsername) {
@@ -23,6 +18,23 @@ const getUserInfo = async (userId, knex) => {
     };
 };
 
-module.exports = {
-    getUserInfo
+function _getLikesQ(knex, userId) {
+    return knex('user_like')
+        .count('* as total')
+        .having('to_user', '=', userId)
+        .groupBy('to_user');
+}
+
+function _getUsernameQ(knex, userId) {
+    return knex('app_user')
+        .select('username')
+        .where('id', userId);
+}
+
+const lib = {
+    getUserInfo,
+    _getLikesQ,
+    _getUsernameQ
 };
+
+module.exports = lib;
