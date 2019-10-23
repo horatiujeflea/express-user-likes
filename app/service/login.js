@@ -5,7 +5,7 @@ const { ValidationError } = require('../error/ValidationError');
 
 
 const login = async (username, password, knex) => {
-    const userQ = await knex('app_user').select('id', 'password').where('username', username);
+    const userQ = await lib._getUserDataQ(knex, username);
 
     if (!(userQ && userQ[0] && userQ[0].password)) {
         throw new ValidationError('Credentials do not match');
@@ -32,7 +32,13 @@ const login = async (username, password, knex) => {
     return token;
 };
 
+function _getUserDataQ(knex, username) {
+    return knex('app_user').select('id', 'password').where('username', username);
+}
 
-module.exports = {
-    login
+const lib = {
+    login,
+    _getUserDataQ
 };
+
+module.exports = lib;
