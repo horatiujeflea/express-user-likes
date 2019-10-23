@@ -17,8 +17,7 @@ const signUp = async (username, password, knex) => {
     const hash = await _getHashFromPass(password);
 
     try {
-        const insertQ = knex('app_user')
-            .insert([{username: username, password: hash}]);
+        const insertQ = lib._getInsertUserQ(knex, username, hash);
         await insertQ;
 
         return {
@@ -34,6 +33,11 @@ const signUp = async (username, password, knex) => {
         }
     }
 };
+
+function _getInsertUserQ(knex, username, hash) {
+    return knex('app_user')
+        .insert([{username: username, password: hash}]);
+}
 
 const changePassword = async (username, password, knex) => {
     if (!_validatePassword(username)) {
@@ -58,7 +62,10 @@ async function _getHashFromPass(password) {
     return await bcrypt.hash(password, saltRounds);
 }
 
-module.exports = {
+const lib = {
     signUp,
-    changePassword
+    changePassword,
+    _getInsertUserQ
 };
+
+module.exports = lib;
