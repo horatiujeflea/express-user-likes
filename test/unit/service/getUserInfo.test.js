@@ -1,6 +1,6 @@
 const getUserInfo = require('../../../app/service/getUserInfo');
 
-test('getUserInfo should return total likes and usernamae', async () => {
+test('getUserInfo should return total likes and username', async () => {
     getUserInfo._getLikesQ = jest.fn(() => Promise.resolve([{total: 2}]));
     getUserInfo._getUsernameQ = jest.fn(() => Promise.resolve([{username: 'johndoe'}]));
 
