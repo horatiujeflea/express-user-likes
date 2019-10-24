@@ -75,6 +75,16 @@ describe("Public Integration Suite", () => {
         );
     });
 
+    test('Like should fail', async () => {
+        const response = await request.put('/user/2/like')
+            .expect(401);
+    });
+
+    test('Unlike should fail', async () => {
+        const response = await request.delete('/user/2/unlike')
+            .expect(401);
+    });
+
     test('Most likes should return data ', async () => {
         const response = await request.get('/most-liked')
             .expect('Content-Type', /json/)
