@@ -7,3 +7,6 @@ INSERT INTO "app_user"("id", "username", "password") VALUES(5, 'johndoe5@gmail.c
 INSERT INTO "user_like"("from_user", "to_user") VALUES(1, 2);
 INSERT INTO "user_like"("from_user", "to_user") VALUES(3, 2);
 INSERT INTO "user_like"("from_user", "to_user") VALUES(3, 1);
+INSERT INTO "user_like"("from_user", "to_user") VALUES(1, 4);
+INSERT INTO "user_like"("from_user", "to_user") VALUES(2, 4);
+INSERT INTO "user_like"("from_user", "to_user") VALUES(3, 4);
