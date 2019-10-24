@@ -46,6 +46,35 @@ describe("Public Integration Suite", () => {
         );
     });
 
+    test('Me should fail', async () => {
+        const response = await request.get('/me')
+            .expect(401);
+    });
+
+    test('Update password should fail', async () => {
+        const response = await request.put('/me/update-password')
+            .send({password: 'passabc8'})
+            .expect(401);
+    });
+
+    test('List user info should return username and total likes', async () => {
+        let response = await request.get('/user/1')
+            .expect('Content-Type', /json/)
+            .expect(200);
+
+        expect(response.body).toEqual(
+            {"likes": "1", "username": "johndoe1@gmail.com"}
+        );
+
+        response = await request.get('/user/4')
+            .expect('Content-Type', /json/)
+            .expect(200);
+
+        expect(response.body).toEqual(
+            {"likes": "3", "username": "johndoe4@gmail.com"}
+        );
+    });
+
     test('Most likes should return data ', async () => {
         const response = await request.get('/most-liked')
             .expect('Content-Type', /json/)
