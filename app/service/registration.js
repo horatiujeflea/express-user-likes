@@ -10,7 +10,7 @@ const signUp = async (username, password, knex) => {
         throw new ValidationError('Username is not correct (specify requirements...)');
     }
 
-    if (!_validatePassword(username)) {
+    if (!_validatePassword(password)) {
         throw new ValidationError('Password is not correct (specify requirements...)');
     }
 
@@ -40,7 +40,7 @@ function _getInsertUserQ(knex, username, hash) {
 }
 
 const changePassword = async (username, password, knex) => {
-    if (!_validatePassword(username)) {
+    if (!_validatePassword(password)) {
         throw new ValidationError('New password is not correct (specify requirements...)');
     }
 

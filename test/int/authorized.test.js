@@ -71,6 +71,25 @@ describe("Authorized Integration Suite", () => {
 
     });
 
+    test('Update password should change the current password', async () => {
+        const cookieHeader = await login(userName, password);
+
+        const response = await request
+            .put('/me/update-password')
+            .send({password: password + '!'})
+            .set('Cookie', cookieHeader)
+            .expect(200);
+
+        await request.post('/login')
+            .send({username: userName, password: password})
+            .expect(400);
+
+        await request.post('/login')
+            .send({username: userName, password: password + '!'})
+            .expect(200);
+
+    });
+
     const login = async () => {
         const loginResp = await request.post('/login')
             .send({username: userName, password: password})
