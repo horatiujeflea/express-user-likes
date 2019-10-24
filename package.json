@@ -7,7 +7,8 @@
     "verbose": true
   },
   "scripts": {
-    "test": "jest",
+    "test": "jest unit",
+    "int-tests": "(node test/int/environment/setup.js) && (jest int) && (node test/int/environment/teardown.js)",
     "start": "node app/app.js"
   },
   "repository": {
