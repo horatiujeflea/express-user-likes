@@ -1,4 +1,7 @@
+const setCookie = require('set-cookie-parser');
+
 const { request } = require('./environment/supertest');
+
 
 describe("Public Integration Suite", () => {
     test('Signup should create a new user ', async () => {
@@ -17,17 +20,6 @@ describe("Public Integration Suite", () => {
     });
 
     test('Login should be possible with the new user ', async () => {
-        const response = await request.post('/login')
-            .send({username: 'willsmith', password: 'passabc1'})
-            .expect('Content-Type', /json/)
-            .expect(200);
-
-        console.log((response.headers['set-cookie'][0]));
-
-        expect(response.body).toEqual(
-            {"status": "successful", "username": "willsmith"}
-        );
-
         await request.post('/login')
             .send({username: 'willsmith', password: 'passabc12'})
             .expect(400);
@@ -35,6 +27,23 @@ describe("Public Integration Suite", () => {
         await request.post('/login')
             .send({username: 'willsmith1', password: 'passabc1'})
             .expect(400);
+
+        const response = await request.post('/login')
+            .send({username: 'willsmith', password: 'passabc1'})
+            .expect('Content-Type', /json/)
+            .expect(200);
+
+        const cookies = setCookie.parse(response, {
+            map: true
+        });
+
+        expect(cookies.token.value).toContain('ey');
+        expect(cookies.token.value).toContain('.');
+        expect(cookies.token.value.length).toBeGreaterThan(10);
+
+        expect(response.body).toEqual(
+            {"status": "successful", "username": "willsmith"}
+        );
     });
 
     test('Most likes should return data ', async () => {
