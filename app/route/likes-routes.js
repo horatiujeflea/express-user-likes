@@ -1,38 +1,38 @@
+const express = require('express');
+
 const { sendError } = require('../util/http-util');
 
+const { getMostLiked } = require('../service/most-liked');
+const { getUserInfo } = require('../service/get-user-info');
 const { likeUser } = require('../service/like-user');
 const { unlikeUser } = require('../service/unlike-user');
-const { changePassword } = require('../service/registration');
-const { getUsernameFromToken, getUserIdFromToken } = require('../service/auth');
 
-const requiresLogin = require('./requires-login-middleware');
+const requiresLogin = require('../middleware/requires-login-middleware');
 
-const lib = (knex, app) => {
-    app.get('/me', requiresLogin, async function (req, res) {
+
+const generateRoutes = (knex) => {
+    const router = express.Router();
+
+    router.get('/most-liked', async function (req, res) {
         try {
-            const token = req.cookies.token;
-            res.json({
-                "username": getUsernameFromToken(token)
-            });
+            res.json(await getMostLiked(knex));
         } catch (e) {
             console.error(e);
             sendError(res)(e);
         }
     });
 
-    app.put('/me/update-password', requiresLogin, async function (req, res) {
+    router.get('/user/:id/', async function (req, res) {
         try {
-            const password = req.body.password;
-            const token = req.cookies.token;
-            await changePassword(getUsernameFromToken(token), password, knex);
-            res.send('Successful');
+            const userId = req.params.id;
+            res.json(await getUserInfo(userId, knex));
         } catch (e) {
             console.error(e);
             sendError(res)(e);
         }
     });
 
-    app.put('/user/:id/like', requiresLogin, async function (req, res) {
+    router.put('/user/:id/like', requiresLogin, async function (req, res) {
         try {
             const token = req.cookies.token;
             const userId = req.params.id;
@@ -44,7 +44,7 @@ const lib = (knex, app) => {
         }
     });
 
-    app.delete('/user/:id/unlike', requiresLogin, async function (req, res) {
+    router.delete('/user/:id/unlike', requiresLogin, async function (req, res) {
         try {
             const token = req.cookies.token;
             const userId = req.params.id;
@@ -55,6 +55,9 @@ const lib = (knex, app) => {
             sendError(res)(e);
         }
     });
+    return router;
 };
 
-module.exports = lib;
+module.exports = (knex) => {
+    return generateRoutes(knex);
+};
