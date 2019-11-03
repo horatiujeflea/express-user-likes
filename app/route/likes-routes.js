@@ -13,16 +13,27 @@ const requiresLogin = require('../middleware/requires-login-middleware');
 const generateRoutes = (knex) => {
     const router = express.Router();
 
-    router.get('/most-liked', async function (req, res) {
+    router.get('/most-liked', mostLikedRoute(knex));
+    router.get('/user/:id/', userInfoRoute(knex));
+    router.put('/user/:id/like', requiresLogin, likeRoute(knex));
+    router.delete('/user/:id/unlike', requiresLogin, unlikeRoute(knex));
+
+    return router;
+};
+
+const mostLikedRoute = (knex) => {
+    return async function (req, res) {
         try {
             res.json(await getMostLiked(knex));
         } catch (e) {
             console.error(e);
             sendError(res)(e);
         }
-    });
+    };
+};
 
-    router.get('/user/:id/', async function (req, res) {
+const userInfoRoute = (knex) => {
+    return async function (req, res) {
         try {
             const userId = req.params.id;
             res.json(await getUserInfo(userId, knex));
@@ -30,9 +41,11 @@ const generateRoutes = (knex) => {
             console.error(e);
             sendError(res)(e);
         }
-    });
+    };
+};
 
-    router.put('/user/:id/like', requiresLogin, async function (req, res) {
+const likeRoute = (knex) => {
+    return async function (req, res) {
         try {
             const token = req.cookies.token;
             const userId = req.params.id;
@@ -42,9 +55,11 @@ const generateRoutes = (knex) => {
             console.error(e);
             sendError(res)(e);
         }
-    });
+    };
+};
 
-    router.delete('/user/:id/unlike', requiresLogin, async function (req, res) {
+const unlikeRoute = (knex) => {
+    return async function (req, res) {
         try {
             const token = req.cookies.token;
             const userId = req.params.id;
@@ -54,8 +69,7 @@ const generateRoutes = (knex) => {
             console.error(e);
             sendError(res)(e);
         }
-    });
-    return router;
+    };
 };
 
 module.exports = (knex) => {
