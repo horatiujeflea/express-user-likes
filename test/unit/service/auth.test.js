@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-const { isAuthorized, getUserIdFromToken, getUsernameFromToken } = require('../../../app/service/auth');
+const { isAuthorized, getUserIdFromToken, getUsernameFromToken } = require('../../../app/service/auth-service');
 
 
 describe('Auth Service test', () => {

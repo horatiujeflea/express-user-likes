@@ -2,12 +2,12 @@ const express = require('express');
 
 const { sendError } = require('../util/http-util');
 
-const { changePassword } = require('../service/registration');
-const { getUsernameFromToken } = require('../service/auth');
-const { getReadmeHtml } = require('../service/readme');
-const { getStatus } = require('../service/status');
-const { login } = require('../service/login');
-const { signUp } = require('../service/registration');
+const { changePassword } = require('../service/registration-service');
+const { getUsernameFromToken } = require('../service/auth-service');
+const { getReadmeHtml } = require('../service/readme-service');
+const { getStatus } = require('../service/status-service');
+const { login } = require('../service/login-service');
+const { signUp } = require('../service/registration-service');
 
 const requiresLogin = require('../middleware/requires-login-middleware');
 

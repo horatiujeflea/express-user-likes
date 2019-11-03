@@ -1,5 +1,5 @@
 const packageJson = require('../../../package');
-const { getStatus } = require('../../../app/service/status');
+const { getStatus } = require('../../../app/service/status-service');
 
 test('getStatus should return proper system status', () => {
     const statusObj = getStatus();

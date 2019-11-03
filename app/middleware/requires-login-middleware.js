@@ -1,4 +1,4 @@
-const { isAuthorized } = require('../service/auth');
+const { isAuthorized } = require('../service/auth-service');
 
 
 module.exports = function (req, res, next) {

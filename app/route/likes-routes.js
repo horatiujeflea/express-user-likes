@@ -2,10 +2,10 @@ const express = require('express');
 
 const { sendError } = require('../util/http-util');
 
-const { getMostLiked } = require('../service/most-liked');
-const { getUserInfo } = require('../service/get-user-info');
-const { likeUser } = require('../service/like-user');
-const { unlikeUser } = require('../service/unlike-user');
+const { getMostLiked } = require('../service/most-liked-service');
+const { getUserInfo } = require('../service/get-user-info-service');
+const { likeUser } = require('../service/like-user-service');
+const { unlikeUser } = require('../service/unlike-user-service');
 
 const requiresLogin = require('../middleware/requires-login-middleware');
 

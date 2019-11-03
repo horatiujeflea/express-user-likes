@@ -1,5 +1,5 @@
 const { ValidationError } = require('../../../app/error/ValidationError');
-const registration = require('../../../app/service/registration');
+const registration = require('../../../app/service/registration-service');
 
 describe("Registration Service Test", () => {
     test('signUp should execute when all params are valid', async () => {

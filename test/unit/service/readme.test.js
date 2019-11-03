@@ -1,4 +1,4 @@
-const { getReadmeHtml } = require('../../../app/service/readme');
+const { getReadmeHtml } = require('../../../app/service/readme-service');
 
 test('getStatus should contain HTML elements', () => {
     const html = getReadmeHtml();

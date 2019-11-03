@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 
 const { ValidationError } = require('../../../app/error/ValidationError');
-const login = require('../../../app/service/login');
+const login = require('../../../app/service/login-service');
 
 
 describe("Login Service Test", () => {
