@@ -1,4 +1,4 @@
-const mostLiked = require('../../../app/service/mostLiked');
+const mostLiked = require('../../../app/service/most-liked');
 
 test('mostLikes should execute all queries', async () => {
     mostLiked._getLikesByUserQ = jest.fn(() => "partial_query");

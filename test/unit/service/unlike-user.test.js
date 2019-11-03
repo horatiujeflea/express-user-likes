@@ -1,4 +1,4 @@
-const unlikeUser = require('../../../app/service/unlikeUser');
+const unlikeUser = require('../../../app/service/unlike-user');
 
 test('unlikeUser should return confirmation if query was executed successfully', async () => {
     unlikeUser._getDeleteQ = jest.fn();

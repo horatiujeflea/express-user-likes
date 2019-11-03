@@ -1,9 +1,9 @@
-const { sendError } = require('../util/httpUtil');
+const { sendError } = require('../util/http-util');
 
 const { getReadmeHtml } = require('../service/readme');
 const { getStatus } = require('../service/status');
-const { getMostLiked } = require('../service/mostLiked');
-const { getUserInfo } = require('../service/getUserInfo');
+const { getMostLiked } = require('../service/most-liked');
+const { getUserInfo } = require('../service/get-user-info');
 const { login } = require('../service/login');
 const { signUp } = require('../service/registration');
 

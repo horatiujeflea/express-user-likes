@@ -1,6 +1,6 @@
-const { knex, app } = require('./config/appConfig');
+const { knex, app } = require('./config/app-config');
 
-require('./route/publicRoutes')(knex, app);
-require('./route/protectedRoutes')(knex, app);
+require('./route/public-routes')(knex, app);
+require('./route/protected-routes')(knex, app);
 
 app.listen(process.env.PORT, () => console.log(`User likes app listening on port ${process.env.PORT}!`));

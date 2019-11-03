@@ -1,6 +1,6 @@
 const { ValidationError } = require('../../../app/error/ValidationError');
 
-const likeUser = require('../../../app/service/likeUser');
+const likeUser = require('../../../app/service/like-user');
 
 describe("Like User Test", () => {
     test('likeUser with valid parameters should be successful', async () => {

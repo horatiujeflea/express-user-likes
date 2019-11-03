@@ -1,11 +1,11 @@
-const { sendError } = require('../util/httpUtil');
+const { sendError } = require('../util/http-util');
 
-const { likeUser } = require('../service/likeUser');
-const { unlikeUser } = require('../service/unlikeUser');
+const { likeUser } = require('../service/like-user');
+const { unlikeUser } = require('../service/unlike-user');
 const { changePassword } = require('../service/registration');
 const { getUsernameFromToken, getUserIdFromToken } = require('../service/auth');
 
-const requiresLogin = require('./requiresLoginMiddleware');
+const requiresLogin = require('./requires-login-middleware');
 
 const lib = (knex, app) => {
     app.get('/me', requiresLogin, async function (req, res) {

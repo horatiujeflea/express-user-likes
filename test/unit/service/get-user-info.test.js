@@ -1,4 +1,4 @@
-const getUserInfo = require('../../../app/service/getUserInfo');
+const getUserInfo = require('../../../app/service/get-user-info');
 
 test('getUserInfo should return total likes and username', async () => {
     getUserInfo._getLikesQ = jest.fn(() => Promise.resolve([{total: 2}]));
