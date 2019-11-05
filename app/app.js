@@ -23,6 +23,6 @@ container.app = app;
 app.use(express.json());
 app.use(require('body-parser').json());
 app.use(require('cookie-parser')());
-app.use(require('./route')(knex));
+app.use(require('./route'));
 
 app.listen(process.env.PORT, () => console.log(`User likes app listening on port ${process.env.PORT}!`));

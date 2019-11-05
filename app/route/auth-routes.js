@@ -9,105 +9,91 @@ const { getStatus } = require('../service/status-service');
 const { login } = require('../service/login-service');
 const { signUp } = require('../service/registration-service');
 
+const container = require('../ioc/container');
+const knex = container.knex;
+
 const requiresLogin = require('../middleware/requires-login-middleware');
 
 
-const generateRoutes = (knex) => {
-    const router = express.Router();
+const router = express.Router();
 
-    router.get('/', defaultRoute());
-    router.get('/status', statusRoute());
-    router.post('/signup', signupRoute(knex));
-    router.post('/login', loginRoute(knex));
-    router.get('/me', requiresLogin, meRoute());
-    router.put('/me/update-password', requiresLogin, updatePasswordRoute(knex));
+router.get('/', defaultRoute);
+router.get('/status', statusRoute);
+router.post('/signup', signupRoute);
+router.post('/login', loginRoute);
+router.get('/me', requiresLogin, meRoute);
+router.put('/me/update-password', requiresLogin, updatePasswordRoute);
 
-    return router;
-};
+function defaultRoute(req, res) {
+    try {
+        res.send(getReadmeHtml());
+    } catch (e) {
+        console.error(e);
+        sendError(res)(e);
+    }
+}
 
-const defaultRoute = () => {
-    return (req, res) => {
-        try {
-            res.send(getReadmeHtml());
-        } catch (e) {
-            console.error(e);
-            sendError(res)(e);
-        }
-    };
-};
+function statusRoute(req, res) {
+    try {
+        res.json(getStatus());
+    } catch (e) {
+        console.error(e);
+        sendError(res)(e);
+    }
+}
 
-const statusRoute = () => {
-    return function (req, res) {
-        try {
-            res.json(getStatus());
-        } catch (e) {
-            console.error(e);
-            sendError(res)(e);
-        }
-    };
-};
 
-const signupRoute = (knex) => {
-    return async function (req, res) {
-        try {
-            const username = req.body.username;
-            const password = req.body.password;
-            res.json(await signUp(username, password, knex));
-        } catch (e) {
-            console.error(e);
-            sendError(res)(e);
-        }
-    };
-};
+async function signupRoute(req, res) {
+    try {
+        const username = req.body.username;
+        const password = req.body.password;
+        res.json(await signUp(username, password, knex));
+    } catch (e) {
+        console.error(e);
+        sendError(res)(e);
+    }
+}
 
-const loginRoute = (knex) => {
-    return async function (req, res) {
-        try {
-            const username = req.body.username;
-            const password = req.body.password;
+async function loginRoute(req, res) {
+    try {
+        const username = req.body.username;
+        const password = req.body.password;
 
-            const token = await login(username, password, knex);
+        const token = await login(username, password, knex);
 
-            res.cookie('token', token, {maxAge: process.env.JWT_EXPIRY_SECONDS * 1000});
-            res.json({
-                username,
-                status: "successful"
-            });
-        } catch (e) {
-            console.error(e);
-            sendError(res)(e);
-        }
-    };
-};
+        res.cookie('token', token, {maxAge: process.env.JWT_EXPIRY_SECONDS * 1000});
+        res.json({
+            username,
+            status: "successful"
+        });
+    } catch (e) {
+        console.error(e);
+        sendError(res)(e);
+    }
+}
 
-const meRoute = () => {
-    return async function (req, res) {
-        try {
-            const token = req.cookies.token;
-            res.json({
-                "username": getUsernameFromToken(token)
-            });
-        } catch (e) {
-            console.error(e);
-            sendError(res)(e);
-        }
-    };
-};
+async function meRoute(req, res) {
+    try {
+        const token = req.cookies.token;
+        res.json({
+            "username": getUsernameFromToken(token)
+        });
+    } catch (e) {
+        console.error(e);
+        sendError(res)(e);
+    }
+}
 
-const updatePasswordRoute = (knex) => {
-    return async function (req, res) {
-        try {
-            const password = req.body.password;
-            const token = req.cookies.token;
-            await changePassword(getUsernameFromToken(token), password, knex);
-            res.send('Successful');
-        } catch (e) {
-            console.error(e);
-            sendError(res)(e);
-        }
-    };
-};
+async function updatePasswordRoute(req, res) {
+    try {
+        const password = req.body.password;
+        const token = req.cookies.token;
+        await changePassword(getUsernameFromToken(token), password, knex);
+        res.send('Successful');
+    } catch (e) {
+        console.error(e);
+        sendError(res)(e);
+    }
+}
 
-module.exports = (knex) => {
-    return generateRoutes(knex);
-};
+module.exports = router;

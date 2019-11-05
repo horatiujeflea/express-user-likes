@@ -1,14 +1,7 @@
 const express = require('express');
+const router = express.Router();
 
-const generateRoutes = (knex) => {
-    const router = express.Router();
+router.use(require('./auth-routes'));
+router.use(require('./likes-routes'));
 
-    router.use(require('./auth-routes')(knex));
-    router.use(require('./likes-routes')(knex));
-
-    return router;
-};
-
-module.exports = (knex) => {
-    return generateRoutes(knex);
-};
+module.exports = router;
