@@ -1,6 +1,10 @@
 const { ValidationError } = require('../error/ValidationError');
 
-const likeUser = async (loggedInUserId, userId, knex) => {
+const container = require('../ioc/container');
+const knex = container.knex;
+
+
+const likeUser = async (loggedInUserId, userId) => {
     let toUserId = parseInt(userId);
 
     const successResp = {
@@ -10,7 +14,7 @@ const likeUser = async (loggedInUserId, userId, knex) => {
     };
 
     try {
-        const insertQ = lib._getInsertQ(knex, loggedInUserId, toUserId);
+        const insertQ = lib._getInsertQ(loggedInUserId, toUserId);
         await insertQ;
 
         return successResp;
@@ -28,7 +32,7 @@ const likeUser = async (loggedInUserId, userId, knex) => {
     }
 };
 
-function _getInsertQ(knex, loggedInUserId, toUserId) {
+function _getInsertQ(loggedInUserId, toUserId) {
     return knex('user_like')
         .insert([{from_user: loggedInUserId, to_user: toUserId}]);
 }

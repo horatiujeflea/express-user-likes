@@ -17,7 +17,7 @@ describe("Like User Test", () => {
     });
 
     test('likeUser should throw proper exceptions based on their constraint', async () => {
-        likeUser._getInsertQ = jest.fn((knex, u1, u2) => {
+        likeUser._getInsertQ = jest.fn((u1, u2) => {
             // user likes himself
             if (u1 === u2) {
                 throw {constraint: 'from_user_cannot_be_equal_to_to_user_chk'}

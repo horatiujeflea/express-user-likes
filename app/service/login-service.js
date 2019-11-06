@@ -1,11 +1,14 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+const container = require('../ioc/container');
+const knex = container.knex;
+
 const { ValidationError } = require('../error/ValidationError');
 
 
-const login = async (username, password, knex) => {
-    const userQ = await lib._getUserDataQ(knex, username);
+const login = async (username, password) => {
+    const userQ = await lib._getUserDataQ(username);
 
     if (!(userQ && userQ[0] && userQ[0].password)) {
         throw new ValidationError('Credentials do not match');
@@ -32,7 +35,7 @@ const login = async (username, password, knex) => {
     return token;
 };
 
-function _getUserDataQ(knex, username) {
+function _getUserDataQ(username) {
     return knex('app_user').select('id', 'password').where('username', username);
 }
 

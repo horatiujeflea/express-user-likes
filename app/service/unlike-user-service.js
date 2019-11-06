@@ -1,7 +1,10 @@
-const unlikeUser = async (loggedInUserId, userId, knex) => {
+const container = require('../ioc/container');
+const knex = container.knex;
+
+const unlikeUser = async (loggedInUserId, userId) => {
     let toUserId = parseInt(userId);
 
-    const deleteQ = lib._getDeleteQ(knex, loggedInUserId, toUserId);
+    const deleteQ = lib._getDeleteQ(loggedInUserId, toUserId);
     await deleteQ;
 
     return {
@@ -11,7 +14,7 @@ const unlikeUser = async (loggedInUserId, userId, knex) => {
     };
 };
 
-function _getDeleteQ(knex, loggedInUserId, toUserId) {
+function _getDeleteQ(loggedInUserId, toUserId) {
     return knex('user_like')
         .where('from_user', loggedInUserId)
         .andWhere('to_user', toUserId)

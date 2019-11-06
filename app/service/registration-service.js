@@ -4,8 +4,11 @@ const saltRounds = 10;
 
 const { ValidationError } = require('../error/ValidationError');
 
+const container = require('../ioc/container');
+const knex = container.knex;
 
-const signUp = async (username, password, knex) => {
+
+const signUp = async (username, password) => {
     if (!_validateUsername(username)) {
         throw new ValidationError('Username is not correct (specify requirements...)');
     }
@@ -17,7 +20,7 @@ const signUp = async (username, password, knex) => {
     const hash = await _getHashFromPass(password);
 
     try {
-        const insertQ = lib._getInsertUserQ(knex, username, hash);
+        const insertQ = lib._getInsertUserQ(username, hash);
         await insertQ;
 
         return {
@@ -34,12 +37,12 @@ const signUp = async (username, password, knex) => {
     }
 };
 
-function _getInsertUserQ(knex, username, hash) {
+function _getInsertUserQ(username, hash) {
     return knex('app_user')
         .insert([{username: username, password: hash}]);
 }
 
-const changePassword = async (username, password, knex) => {
+const changePassword = async (username, password) => {
     if (!_validatePassword(password)) {
         throw new ValidationError('New password is not correct (specify requirements...)');
     }

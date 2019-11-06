@@ -9,9 +9,6 @@ const { getStatus } = require('../service/status-service');
 const { login } = require('../service/login-service');
 const { signUp } = require('../service/registration-service');
 
-const container = require('../ioc/container');
-const knex = container.knex;
-
 const requiresLogin = require('../middleware/requires-login-middleware');
 
 
@@ -47,7 +44,7 @@ async function signupRoute(req, res) {
     try {
         const username = req.body.username;
         const password = req.body.password;
-        res.json(await signUp(username, password, knex));
+        res.json(await signUp(username, password));
     } catch (e) {
         console.error(e);
         sendError(res)(e);
@@ -59,7 +56,7 @@ async function loginRoute(req, res) {
         const username = req.body.username;
         const password = req.body.password;
 
-        const token = await login(username, password, knex);
+        const token = await login(username, password);
 
         res.cookie('token', token, {maxAge: process.env.JWT_EXPIRY_SECONDS * 1000});
         res.json({
@@ -88,7 +85,7 @@ async function updatePasswordRoute(req, res) {
     try {
         const password = req.body.password;
         const token = req.cookies.token;
-        await changePassword(getUsernameFromToken(token), password, knex);
+        await changePassword(getUsernameFromToken(token), password);
         res.send('Successful');
     } catch (e) {
         console.error(e);

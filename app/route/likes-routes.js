@@ -7,9 +7,6 @@ const { getUserInfo } = require('../service/get-user-info-service');
 const { likeUser } = require('../service/like-user-service');
 const { unlikeUser } = require('../service/unlike-user-service');
 
-const container = require('../ioc/container');
-const knex = container.knex;
-
 const requiresLogin = require('../middleware/requires-login-middleware');
 
 
@@ -22,7 +19,7 @@ router.delete('/user/:id/unlike', requiresLogin, unlikeRoute);
 
 async function mostLikedRoute(req, res) {
     try {
-        res.json(await getMostLiked(knex));
+        res.json(await getMostLiked());
     } catch (e) {
         console.error(e);
         sendError(res)(e);
@@ -32,7 +29,7 @@ async function mostLikedRoute(req, res) {
 async function userInfoRoute(req, res) {
     try {
         const userId = req.params.id;
-        res.json(await getUserInfo(userId, knex));
+        res.json(await getUserInfo(userId));
     } catch (e) {
         console.error(e);
         sendError(res)(e);
@@ -44,7 +41,7 @@ async function likeRoute(req, res) {
         const token = req.cookies.token;
         const userId = req.params.id;
         const loggedInUser = parseInt(getUserIdFromToken(token));
-        res.json(await likeUser(loggedInUser, userId, knex));
+        res.json(await likeUser(loggedInUser, userId));
     } catch (e) {
         console.error(e);
         sendError(res)(e);
@@ -56,7 +53,7 @@ async function unlikeRoute(req, res) {
         const token = req.cookies.token;
         const userId = req.params.id;
         const loggedInUser = parseInt(getUserIdFromToken(token));
-        res.json(await unlikeUser(loggedInUser, userId, knex));
+        res.json(await unlikeUser(loggedInUser, userId));
     } catch (e) {
         console.error(e);
         sendError(res)(e);

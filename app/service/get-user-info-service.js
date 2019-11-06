@@ -1,9 +1,12 @@
 const { ValidationError } = require('../error/ValidationError');
 
+const container = require('../ioc/container');
+const knex = container.knex;
 
-const getUserInfo = async (userId, knex) => {
-    const getLikesQ = lib._getLikesQ(knex, userId);
-    const getUsernameQ = lib._getUsernameQ(knex, userId);
+
+const getUserInfo = async (userId) => {
+    const getLikesQ = lib._getLikesQ(userId);
+    const getUsernameQ = lib._getUsernameQ(userId);
 
     const foundUsername = (await getUsernameQ)[0];
     if (!foundUsername) {
@@ -18,14 +21,14 @@ const getUserInfo = async (userId, knex) => {
     };
 };
 
-function _getLikesQ(knex, userId) {
+function _getLikesQ(userId) {
     return knex('user_like')
         .count('* as total')
         .having('to_user', '=', userId)
         .groupBy('to_user');
 }
 
-function _getUsernameQ(knex, userId) {
+function _getUsernameQ(userId) {
     return knex('app_user')
         .select('username')
         .where('id', userId);

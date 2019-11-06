@@ -1,11 +1,14 @@
-const getMostLiked = async (knex) => {
-    const likesByUserQ = lib._getLikesByUserQ(knex);
-    const mostLikedQ = lib._getMostLikedQ(knex, likesByUserQ);
+const container = require('../ioc/container');
+const knex = container.knex;
+
+const getMostLiked = async () => {
+    const likesByUserQ = lib._getLikesByUserQ();
+    const mostLikedQ = lib._getMostLikedQ(likesByUserQ);
 
     return await mostLikedQ;
 };
 
-function _getLikesByUserQ(knex) {
+function _getLikesByUserQ() {
     return knex('user_like')
         .select('to_user')
         .count('* as total')
@@ -13,7 +16,7 @@ function _getLikesByUserQ(knex) {
         .as('q');
 }
 
-function _getMostLikedQ(knex, likesByUserQ) {
+function _getMostLikedQ(likesByUserQ) {
     return knex('app_user AS au')
         .select('q.to_user AS user_id', 'au.username', 'q.total')
         .innerJoin(likesByUserQ, "au.id", "q.to_user")
