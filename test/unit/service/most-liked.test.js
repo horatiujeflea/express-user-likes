@@ -1,7 +1,7 @@
 const container = require('../../../app/ioc/container');
+container.userRepo = {};
 
 test('mostLikes should execute all queries', async () => {
-    container.userRepo = {};
     container.userRepo.getMostLikedQ = jest.fn(() => 'result');
 
     const mostLiked = require('../../../app/service/most-liked-service');

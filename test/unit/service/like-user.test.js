@@ -1,10 +1,13 @@
 const { ValidationError } = require('../../../app/error/ValidationError');
 
+const container = require('../../../app/ioc/container');
+container.likesRepo = {};
+
 const likeUser = require('../../../app/service/like-user-service');
 
 describe("Like User Test", () => {
     test('likeUser with valid parameters should be successful', async () => {
-        likeUser._getInsertQ = jest.fn();
+        container.likesRepo.getInsertQ = jest.fn();
 
         const result = await likeUser.likeUser(1, 2);
         expect(result).toEqual({
@@ -13,11 +16,11 @@ describe("Like User Test", () => {
             state: 'successful'
         });
 
-        expect(likeUser._getInsertQ).toHaveBeenCalledTimes(1);
+        expect(container.likesRepo.getInsertQ).toHaveBeenCalledTimes(1);
     });
 
     test('likeUser should throw proper exceptions based on their constraint', async () => {
-        likeUser._getInsertQ = jest.fn((u1, u2) => {
+        container.likesRepo.getInsertQ = jest.fn((u1, u2) => {
             // user likes himself
             if (u1 === u2) {
                 throw {constraint: 'from_user_cannot_be_equal_to_to_user_chk'}

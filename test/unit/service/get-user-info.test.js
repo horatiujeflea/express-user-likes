@@ -1,9 +1,9 @@
 const container = require('../../../app/ioc/container');
+container.userRepo = {};
+container.likesRepo = {};
 
 test('getUserInfo should return total likes and username', async () => {
-    container.userRepo = {};
     container.userRepo.getUsernameByIdQ = jest.fn(() => Promise.resolve([{username: 'johndoe'}]));
-    container.likesRepo = {};
     container.likesRepo.getLikesCountQ = jest.fn(() => Promise.resolve([{total: 2}]));
 
     const getUserInfo = require('../../../app/service/get-user-info-service');
