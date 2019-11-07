@@ -1,9 +1,14 @@
+const container = require('../../../app/ioc/container');
+container.userRepo = {};
+
 const { ValidationError } = require('../../../app/error/ValidationError');
-const registration = require('../../../app/service/registration-service');
+
 
 describe("Registration Service Test", () => {
     test('signUp should execute when all params are valid', async () => {
-        registration._getInsertUserQ = jest.fn();
+        container.userRepo.getInsertUserQ = jest.fn();
+
+        const registration = require('../../../app/service/registration-service');
 
         const result = await registration.signUp('johndoe', 'pass123');
         expect(result).toEqual({
@@ -11,13 +16,15 @@ describe("Registration Service Test", () => {
             "username": "johndoe"
         });
 
-        expect(registration._getInsertUserQ).toHaveBeenCalledTimes(1);
+        expect(container.userRepo.getInsertUserQ).toHaveBeenCalledTimes(1);
     });
 
     test('signUp should fail when user exists', async () => {
-        registration._getInsertUserQ = jest.fn(() => {
+        container.userRepo.getInsertUserQ = jest.fn(() => {
             throw {constraint: 'app_user_username_key'}
         });
+
+        const registration = require('../../../app/service/registration-service');
 
         try {
             const result = await registration.signUp('johndoe', 'pass123');
@@ -27,8 +34,6 @@ describe("Registration Service Test", () => {
             expect(e.message).toBe("Username is already taken");
         }
 
-        expect(registration._getInsertUserQ).toHaveBeenCalledTimes(1);
+        expect(container.userRepo.getInsertUserQ).toHaveBeenCalledTimes(1);
     });
-
-
 });

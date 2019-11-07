@@ -1,14 +1,14 @@
 const bcrypt = require('bcryptjs');
-
 const saltRounds = 10;
 
 const { ValidationError } = require('../error/ValidationError');
 
 const container = require('../ioc/container');
-const userRepo = container.userRepo;
 
 
 const signUp = async (username, password) => {
+    const userRepo = container.userRepo;
+
     if (!_validateUsername(username)) {
         throw new ValidationError('Username is not correct (specify requirements...)');
     }
@@ -20,7 +20,7 @@ const signUp = async (username, password) => {
     const hash = await _getHashFromPass(password);
 
     try {
-        const insertQ = userRepo.getInsertUserQ(username, hash);
+        const insertQ = container.userRepo.getInsertUserQ(username, hash);
         await insertQ;
 
         return {
@@ -38,6 +38,8 @@ const signUp = async (username, password) => {
 };
 
 const changePassword = async (username, password) => {
+    const userRepo = container.userRepo;
+
     if (!_validatePassword(password)) {
         throw new ValidationError('New password is not correct (specify requirements...)');
     }

@@ -1,12 +1,13 @@
-const mostLiked = require('../../../app/service/most-liked-service');
+const container = require('../../../app/ioc/container');
 
 test('mostLikes should execute all queries', async () => {
-    mostLiked._getLikesByUserQ = jest.fn(() => "partial_query");
-    mostLiked._getMostLikedQ = jest.fn(() => 'result');
+    container.userRepo = {};
+    container.userRepo.getMostLikedQ = jest.fn(() => 'result');
+
+    const mostLiked = require('../../../app/service/most-liked-service');
 
     const result = await mostLiked.getMostLiked();
     expect(result).toEqual('result');
 
-    expect(mostLiked._getLikesByUserQ).toHaveBeenCalledTimes(1);
-    expect(mostLiked._getMostLikedQ).toHaveBeenCalledTimes(1);
+    expect(container.userRepo.getMostLikedQ).toHaveBeenCalledTimes(1);
 });

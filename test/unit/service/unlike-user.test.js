@@ -1,7 +1,10 @@
-const unlikeUser = require('../../../app/service/unlike-user-service');
+const container = require('../../../app/ioc/container');
 
 test('unlikeUser should return confirmation if query was executed successfully', async () => {
-    unlikeUser._getDeleteQ = jest.fn();
+    container.likesRepo = {};
+    container.likesRepo.getDeleteQ = jest.fn();
+
+    const unlikeUser = require('../../../app/service/unlike-user-service');
 
     const result = await unlikeUser.unlikeUser(1,2,undefined);
     expect(result).toEqual({
@@ -10,5 +13,5 @@ test('unlikeUser should return confirmation if query was executed successfully',
         state: 'successful'
     });
 
-    expect(unlikeUser._getDeleteQ).toHaveBeenCalledTimes(1);
+    expect(container.likesRepo.getDeleteQ).toHaveBeenCalledTimes(1);
 });
