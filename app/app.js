@@ -12,8 +12,10 @@ const knex = require('knex')({
         database : process.env.DB_DATABASE
     }
 });
-
 container.knex = knex;
+
+container.userRepo = require('./repo/user-repository');
+container.likesRepo = require('./repo/likes-repository');
 
 const express = require('express');
 const app = express();

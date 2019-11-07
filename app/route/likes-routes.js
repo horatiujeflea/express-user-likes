@@ -6,6 +6,7 @@ const { getMostLiked } = require('../service/most-liked-service');
 const { getUserInfo } = require('../service/get-user-info-service');
 const { likeUser } = require('../service/like-user-service');
 const { unlikeUser } = require('../service/unlike-user-service');
+const { getUserIdFromToken } = require('../service/auth-service');
 
 const requiresLogin = require('../middleware/requires-login-middleware');
 

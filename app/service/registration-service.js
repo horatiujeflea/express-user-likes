@@ -5,7 +5,7 @@ const saltRounds = 10;
 const { ValidationError } = require('../error/ValidationError');
 
 const container = require('../ioc/container');
-const knex = container.knex;
+const userRepo = container.userRepo;
 
 
 const signUp = async (username, password) => {
@@ -20,7 +20,7 @@ const signUp = async (username, password) => {
     const hash = await _getHashFromPass(password);
 
     try {
-        const insertQ = lib._getInsertUserQ(username, hash);
+        const insertQ = userRepo.getInsertUserQ(username, hash);
         await insertQ;
 
         return {
@@ -37,18 +37,13 @@ const signUp = async (username, password) => {
     }
 };
 
-function _getInsertUserQ(username, hash) {
-    return knex('app_user')
-        .insert([{username: username, password: hash}]);
-}
-
 const changePassword = async (username, password) => {
     if (!_validatePassword(password)) {
         throw new ValidationError('New password is not correct (specify requirements...)');
     }
 
     const hash = await _getHashFromPass(password);
-    await knex('app_user').update('password', hash);
+    await userRepo.updatePassword(hash);
 };
 
 const _validateUsername = (username) => {
@@ -65,10 +60,7 @@ async function _getHashFromPass(password) {
     return await bcrypt.hash(password, saltRounds);
 }
 
-const lib = {
+module.exports = {
     signUp,
-    changePassword,
-    _getInsertUserQ
+    changePassword
 };
-
-module.exports = lib;
