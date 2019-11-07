@@ -1,7 +1,7 @@
 const container = require('../ioc/container');
-const userRepo = container.userRepo;
 
 const getMostLiked = async () => {
+    const userRepo = container.userRepo;
     return await userRepo.getMostLikedQ();
 };
 

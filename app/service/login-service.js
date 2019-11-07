@@ -2,12 +2,13 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const container = require('../ioc/container');
-const userRepo = container.userRepo;
 
 const { ValidationError } = require('../error/ValidationError');
 
 
 const login = async (username, password) => {
+    const userRepo = container.userRepo;
+
     const userQ = await userRepo.getUserDataByUsernameQ(username);
 
     if (!(userQ && userQ[0] && userQ[0].password)) {

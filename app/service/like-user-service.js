@@ -1,11 +1,12 @@
 const { ValidationError } = require('../error/ValidationError');
 
 const container = require('../ioc/container');
-const likesRepo = container.likesRepo;
 
 
 const likeUser = async (loggedInUserId, userId) => {
-    let toUserId = parseInt(userId);
+    const likesRepo = container.likesRepo;
+
+    const toUserId = parseInt(userId);
 
     const successResp = {
         from: loggedInUserId,

@@ -20,7 +20,7 @@ const signUp = async (username, password) => {
     const hash = await _getHashFromPass(password);
 
     try {
-        const insertQ = container.userRepo.getInsertUserQ(username, hash);
+        const insertQ = userRepo.getInsertUserQ(username, hash);
         await insertQ;
 
         return {

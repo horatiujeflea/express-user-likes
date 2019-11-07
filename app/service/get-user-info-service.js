@@ -1,11 +1,12 @@
 const { ValidationError } = require('../error/ValidationError');
 
 const container = require('../ioc/container');
-const userRepo = container.userRepo;
-const likesRepo = container.likesRepo;
 
 
 const getUserInfo = async (userId) => {
+    const userRepo = container.userRepo;
+    const likesRepo = container.likesRepo;
+
     const getLikesCountQ = likesRepo.getLikesCountQ(userId);
     const getUsernameQ = userRepo.getUsernameByIdQ(userId);
 
