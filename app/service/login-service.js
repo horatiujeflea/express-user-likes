@@ -29,7 +29,7 @@ const login = async (username, password) => {
         process.env.JWT_SECRET,
         {
             algorithm: 'HS256',
-            expiresIn: process.env.JWT_EXPIRY_SECONDS
+            expiresIn: parseInt(process.env.JWT_EXPIRY_SECONDS)
         }
     );
 
